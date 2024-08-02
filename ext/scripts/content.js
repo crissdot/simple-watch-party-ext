@@ -46,26 +46,26 @@ const clientId = parseInt(Date.now() * Math.random());
 const ws = new WebSocket("wss://localhost:8000/ws/" + clientId);
 
 ws.onopen = function(event) {
-    console.log("Connected to WebSocket server");
+  console.log("Connected to WebSocket server. Your id is: " + clientId);
 };
 
 ws.onmessage = function(event) {
-    console.log("Message from server: ", event.data);
-    dataReceived = event.data;
-    if (!video) return;
-    if (dataReceived === 'play') video.play();
-    if (dataReceived === 'pause') video.pause();
-    if (dataReceived.startsWith('time:')) {
-      const time = dataReceived.split(':')[1];
-      lastCurrentTime = time;
-      video.currentTime = time;
-    };
+  console.log("Message from server: ", event.data);
+  dataReceived = event.data;
+  if (!video) return;
+  if (dataReceived === 'play') video.play();
+  if (dataReceived === 'pause') video.pause();
+  if (dataReceived.startsWith('time:')) {
+    const time = dataReceived.split(':')[1];
+    lastCurrentTime = time;
+    video.currentTime = time;
+  };
 };
 
 ws.onclose = function(event) {
-    console.log("Disconnected from WebSocket server");
+  console.log("Disconnected from WebSocket server");
 };
 
 ws.onerror = function(error) {
-    console.error("WebSocket error: ", error);
+  console.error("WebSocket error: ", error);
 };
