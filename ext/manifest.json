@@ -7,14 +7,22 @@
     "default_title": "Watch Party"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "tabs"
   ],
   "content_scripts": [
     {
-      "js": ["scripts/content.js"],
+      "js": [
+        "scripts/content.js"
+      ],
       "matches": [
-        "https://www.primevideo.com/*"
-      ]
+        "https://www.primevideo.com/*",
+        "https://*.crunchyroll.com/*"
+      ],
+      "all_frames": true
     }
-  ]
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
 }
