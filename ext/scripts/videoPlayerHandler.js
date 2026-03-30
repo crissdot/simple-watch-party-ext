@@ -33,11 +33,21 @@ function addVideoPlayerListeners() {
 }
 
 function playVideo() {
-  if (!video || !playerControls) console.log('Cannot play video remotely');
-  if (video.paused) playerControls.click();
+  video = getGlobalVideo();
+  console.log('Playing video', video);
+  if (!video || !video.paused) {
+    console.log('Cannot play video remotely');
+    return;
+  }
+  video.play();
 }
 
 function pauseVideo() {
-  if (!video || !playerControls) console.log('Cannot pause video remotely');
-  if (!video.paused) playerControls.click();
+  video = getGlobalVideo();
+  console.log('Pausing video', video);
+  if (!video || video.paused) {
+    console.log('Cannot pause video remotely');
+    return;
+  }
+  video.pause();
 }

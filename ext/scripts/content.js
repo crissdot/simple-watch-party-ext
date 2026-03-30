@@ -11,6 +11,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     connectedEvent();
     return;
   }
+  if (message.action === "VIDEO_PLAY_EVENT") {
+    playVideo();
+    return;
+  }
+  if (message.action === "VIDEO_PAUSE_EVENT") {
+    pauseVideo();
+    return;
+  }
 });
 
 function init() {

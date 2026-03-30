@@ -1,11 +1,14 @@
+let ws = null;
+let dataReceived = null;
+let tabId = null;
+
 chrome.action.onClicked.addListener((tab) => {
-  chrome.tabs.sendMessage(tab.id, {
+  tabId = tab.id;
+  chrome.tabs.sendMessage(tabId, {
     action: "EXTENSION_CLICKED"
   });
 });
 
-let ws = null;
-let dataReceived = null;
 
 function addWebSocketListeners() {
   const clientId = parseInt(Date.now() * Math.random());
@@ -13,20 +16,24 @@ function addWebSocketListeners() {
 
   ws.onopen = function(event) {
     console.log("Connected to WebSocket server. Your id is: " + clientId);
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    const tabId = tabs[0].id;
-
     chrome.tabs.sendMessage(tabId, {
       action: "WS_CONNECTED_EVENT",
     });
-  });
   };
 
   ws.onmessage = function(event) {
     console.log("Message from server: ", event.data);
     dataReceived = event.data;
-    if (dataReceived === 'play') playVideo();
-    if (dataReceived === 'pause') pauseVideo();
+    if (dataReceived === 'play') {
+      chrome.tabs.sendMessage(tabId, {
+        action: "VIDEO_PLAY_EVENT",
+      });
+    }
+    if (dataReceived === 'pause') {
+      chrome.tabs.sendMessage(tabId, {
+        action: "VIDEO_PAUSE_EVENT",
+      });
+    }
     if (dataReceived.startsWith('time:')) {
       // TODO
       // const time = dataReceived.split(':')[1];
