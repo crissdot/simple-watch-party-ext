@@ -1,3 +1,16 @@
+function getVideoElement() {
+  if (window.location.hostname.includes('crunchyroll.com')) return getCrunchyrollVideoElement();
+}
+
+// Crunchyroll
+function getCrunchyrollVideoElement() {
+  // Old version
+  if (window.location.hostname.includes('static.crunchyroll.com')) {
+    console.log('Getting video element for crunchyroll old player');
+    return document.getElementById('player0');
+  }
+}
+
 // PrimeVideo
 function waitForVideoElement() {
   const observer = new MutationObserver((mutations, me) => {

@@ -13,6 +13,9 @@
   "content_scripts": [
     {
       "js": [
+        "scripts/videoPlayerGetter.js",
+        "scripts/videoPlayerHandler.js",
+        "scripts/webSocketService.js",
         "scripts/content.js"
       ],
       "matches": [
