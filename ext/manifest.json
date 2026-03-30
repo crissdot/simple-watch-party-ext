@@ -13,6 +13,7 @@
   "content_scripts": [
     {
       "js": [
+        "scripts/videoStore.js",
         "scripts/videoPlayerGetter.js",
         "scripts/videoPlayerHandler.js",
         "scripts/webSocketService.js",

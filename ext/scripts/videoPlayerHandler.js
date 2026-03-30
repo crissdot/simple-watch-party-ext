@@ -1,7 +1,11 @@
-let video = null;
 let playerControls = null;
 
 function addVideoPlayerListeners() {
+  video = getGlobalVideo();
+  if (!video) return;
+
+  console.log('Adding video player listeners', video);
+
   video.onplay = (event) => {
     console.log('onplay event');
     sendPlayEvent();

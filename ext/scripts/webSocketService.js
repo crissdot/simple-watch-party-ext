@@ -1,11 +1,11 @@
 function sendPlayEvent() {
   chrome.runtime.sendMessage({
-    type: "PLAY_VIDEO"
+    type: "VIDEO_PLAY_EVENT"
   });
 }
 
 function sendPauseEvent() {
   chrome.runtime.sendMessage({
-    type: "PAUSE_VIDEO"
+    type: "VIDEO_PAUSE_EVENT"
   });
 }

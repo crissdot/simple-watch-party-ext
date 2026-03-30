@@ -13,8 +13,13 @@ function addWebSocketListeners() {
 
   ws.onopen = function(event) {
     console.log("Connected to WebSocket server. Your id is: " + clientId);
-    addVideoPlayerListeners();
-    isConnected = true;
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    const tabId = tabs[0].id;
+
+    chrome.tabs.sendMessage(tabId, {
+      action: "WS_CONNECTED_EVENT",
+    });
+  });
   };
 
   ws.onmessage = function(event) {
@@ -41,19 +46,19 @@ function addWebSocketListeners() {
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === "INIT_WS") {
+  if (message.type === "WS_INIT_EVENT") {
     console.log("Init ws");
     addWebSocketListeners();
   }
 
-  if (message.type === "PLAY_VIDEO") {
+  if (message.type === "VIDEO_PLAY_EVENT") {
     if (!ws) return;
     if (dataReceived === 'play') return;
     console.log('Sending play event');
     ws.send('play');
   }
 
-  if (message.type === "PAUSE_VIDEO") {
+  if (message.type === "VIDEO_PAUSE_EVENT") {
     if (!ws) return;
     if (dataReceived === 'pause') return;
     console.log('Sending pause event');

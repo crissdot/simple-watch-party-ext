@@ -1,11 +1,17 @@
+let isConnected = false;
+console.log("Running on:", window.location.href);
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log("Running on:", window.location.href);
+  console.log('Message received', message);
   if (message.action === "EXTENSION_CLICKED") {
     init();
+    return;
+  }
+  if (message.action === "WS_CONNECTED_EVENT") {
+    connectedEvent();
+    return;
   }
 });
-
-let isConnected = false;
 
 function init() {
   if (isConnected) {
@@ -14,13 +20,20 @@ function init() {
   }
 
   console.log("Extension clicked inside content script!");
-  video = getVideoElement();
+  const video = getVideoElement();
   if (!video) {
     console.log('Cannot get video')
     return;
   }
 
+  setGlobalVideo(video);
   chrome.runtime.sendMessage({
-    type: "INIT_WS"
+    type: "WS_INIT_EVENT"
   });
+}
+
+function connectedEvent() {
+  console.log('connected event');
+  addVideoPlayerListeners();
+  isConnected = true;
 }
