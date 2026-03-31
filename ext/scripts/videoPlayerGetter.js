@@ -9,6 +9,7 @@ function getCrunchyrollVideoElement() {
     console.log('Getting video element for crunchyroll old player');
     return document.getElementById('player0');
   }
+  return document.getElementsByTagName("video")[0];
 }
 
 // PrimeVideo
