@@ -35,10 +35,11 @@ function addWebSocketListeners() {
       });
     }
     if (dataReceived.startsWith('time:')) {
-      // TODO
-      // const time = dataReceived.split(':')[1];
-      // lastCurrentTime = time;
-      // video.currentTime = time;
+      const time = dataReceived.split(':')[1];
+      chrome.tabs.sendMessage(tabId, {
+        action: "VIDEO_SEEKED_EVENT",
+        payload: time,
+      });
     };
   };
 
@@ -60,15 +61,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   if (message.type === "VIDEO_PLAY_EVENT") {
     if (!ws) return;
-    if (dataReceived === 'play') return;
     console.log('Sending play event');
     ws.send('play');
   }
 
   if (message.type === "VIDEO_PAUSE_EVENT") {
     if (!ws) return;
-    if (dataReceived === 'pause') return;
     console.log('Sending pause event');
     ws.send('pause');
+  }
+
+  if (message.type === "VIDEO_SEEKED_EVENT") {
+    if (!ws) return;
+    console.log('Sending seeked event');
+    ws.send('time:' + message.payload);
   }
 });

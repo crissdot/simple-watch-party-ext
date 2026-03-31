@@ -19,6 +19,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     pauseVideo();
     return;
   }
+  if (message.action === "VIDEO_SEEKED_EVENT") {
+    seekVideo(message.payload);
+    return;
+  }
 });
 
 function init() {

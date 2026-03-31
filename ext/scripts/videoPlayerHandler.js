@@ -6,30 +6,20 @@ function addVideoPlayerListeners() {
 
   console.log('Adding video player listeners', video);
 
-  video.onplay = (event) => {
+  video.onplay = () => {
     console.log('onplay event');
     sendPlayEvent();
   };
 
-  video.onpause = (event) => {
+  video.onpause = () => {
     console.log('onpause event');
     sendPauseEvent();
   };
 
-  video.onseeked = (event) => {
-    console.log('onseeked event');1
-    // TODO send time event
+  video.onseeked = () => {
+    console.log('onseeked event');
+    sendSeekedEvent(video.currentTime);
   };
-
-  // TODO
-  // let lastCurrentTime;
-  // video.addEventListener('timeupdate', () => {
-  //   if (dataReceived?.startsWith('time:')) return;
-  //   if (Math.abs(lastCurrentTime - video.currentTime) > 2) {
-  //     ws.send('time:' + video.currentTime);
-  //   }
-  //   lastCurrentTime = video.currentTime;
-  // });
 }
 
 function playVideo() {
@@ -50,4 +40,14 @@ function pauseVideo() {
     return;
   }
   video.pause();
+}
+
+function seekVideo(newTime) {
+  video = getGlobalVideo();
+  console.log('Seeking video with new time', newTime);
+  if (!video || Math.abs(newTime - video.currentTime) < 2) {
+    console.log('Cannot seek video remotely');
+    return;
+  }
+  video.currentTime = newTime;
 }
