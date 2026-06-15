@@ -4,29 +4,29 @@ function addVideoPlayerListeners() {
   video = getGlobalVideo();
   if (!video) return;
 
-  console.log('Adding video player listeners', video);
+  logger.info('Adding video player listeners', video);
 
   video.onplay = () => {
-    console.log('onplay event');
+    logger.info('onplay event');
     sendPlayEvent();
   };
 
   video.onpause = () => {
-    console.log('onpause event');
+    logger.info('onpause event');
     sendPauseEvent();
   };
 
   video.onseeked = () => {
-    console.log('onseeked event');
+    logger.info('onseeked event');
     sendSeekedEvent(video.currentTime);
   };
 }
 
 function playVideo() {
   video = getGlobalVideo();
-  console.log('Playing video', video);
+  logger.info('Playing video', video);
   if (!video || !video.paused) {
-    console.log('Cannot play video remotely');
+    logger.info('Cannot play video remotely');
     return;
   }
   video.play();
@@ -34,9 +34,9 @@ function playVideo() {
 
 function pauseVideo() {
   video = getGlobalVideo();
-  console.log('Pausing video', video);
+  logger.info('Pausing video', video);
   if (!video || video.paused) {
-    console.log('Cannot pause video remotely');
+    logger.info('Cannot pause video remotely');
     return;
   }
   video.pause();
@@ -44,9 +44,9 @@ function pauseVideo() {
 
 function seekVideo(newTime) {
   video = getGlobalVideo();
-  console.log('Seeking video with new time', newTime);
+  logger.info('Seeking video with new time', newTime);
   if (!video || Math.abs(newTime - video.currentTime) < 2) {
-    console.log('Cannot seek video remotely');
+    logger.info('Cannot seek video remotely');
     return;
   }
   video.currentTime = newTime;

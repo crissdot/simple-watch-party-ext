@@ -1,8 +1,8 @@
 let isConnected = false;
-console.log("Running on:", window.location.href);
+logger.info("Running on:", window.location.href);
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log('Message received', message);
+  logger.info('Message received', message);
   if (message.action === "EXTENSION_CLICKED") {
     init();
     return;
@@ -27,14 +27,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 function init() {
   if (isConnected) {
-    console.log('Watch Party already synced');
+    logger.info('Watch Party already synced');
     return;
   }
 
-  console.log("Extension clicked inside content script!");
+  logger.info("Extension clicked inside content script!");
   const video = getVideoElement();
   if (!video) {
-    console.log('Cannot get video')
+    logger.info('Cannot get video')
     return;
   }
 
@@ -45,7 +45,7 @@ function init() {
 }
 
 function connectedEvent() {
-  console.log('connected event');
+  logger.info('connected event');
   addVideoPlayerListeners();
   isConnected = true;
 }

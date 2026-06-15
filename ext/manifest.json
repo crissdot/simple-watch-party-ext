@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "watch-party-ext",
   "description": "See your favorite movies with your friends",
-  "version": "1.0",
+  "version": "1.0.1",
   "action": {
     "default_title": "Watch Party"
   },
@@ -12,6 +12,7 @@
   "content_scripts": [
     {
       "js": [
+        "utils/Logger.js",
         "scripts/videoStore.js",
         "scripts/videoPlayerGetter.js",
         "scripts/videoPlayerHandler.js",

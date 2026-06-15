@@ -6,7 +6,7 @@ function getVideoElement() {
 function getCrunchyrollVideoElement() {
   // Old version
   if (window.location.hostname.includes('static.crunchyroll.com')) {
-    console.log('Getting video element for crunchyroll old player');
+    logger.info('Getting video element for crunchyroll old player');
     return document.getElementById('player0');
   }
   return document.getElementsByTagName("video")[0];

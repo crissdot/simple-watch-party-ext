@@ -1,3 +1,5 @@
+importScripts("utils/Logger.js");
+
 let ws = null;
 let dataReceived = null;
 let tabId = null;
@@ -15,14 +17,14 @@ function addWebSocketListeners() {
   ws = new WebSocket("ws://localhost:8000/ws/" + clientId);
 
   ws.onopen = function(event) {
-    console.log("Connected to WebSocket server. Your id is: " + clientId);
+    logger.info("Connected to WebSocket server. Your id is: " + clientId);
     chrome.tabs.sendMessage(tabId, {
       action: "WS_CONNECTED_EVENT",
     });
   };
 
   ws.onmessage = function(event) {
-    console.log("Message from server: ", event.data);
+    logger.info("Message from server: ", event.data);
     dataReceived = event.data;
     if (dataReceived === 'play') {
       chrome.tabs.sendMessage(tabId, {
@@ -44,36 +46,36 @@ function addWebSocketListeners() {
   };
 
   ws.onclose = function(event) {
-    console.log("Disconnected from WebSocket server");
+    logger.info("Disconnected from WebSocket server");
   };
 
   ws.onerror = function(error) {
-    console.error("WebSocket error: ", error);
+    logger.error("WebSocket error: ", error);
     alert('An error occurred whyle trying to connect to server');
   };
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "WS_INIT_EVENT") {
-    console.log("Init ws");
+    logger.info("Init ws");
     addWebSocketListeners();
   }
 
   if (message.type === "VIDEO_PLAY_EVENT") {
     if (!ws) return;
-    console.log('Sending play event');
+    logger.info('Sending play event');
     ws.send('play');
   }
 
   if (message.type === "VIDEO_PAUSE_EVENT") {
     if (!ws) return;
-    console.log('Sending pause event');
+    logger.info('Sending pause event');
     ws.send('pause');
   }
 
   if (message.type === "VIDEO_SEEKED_EVENT") {
     if (!ws) return;
-    console.log('Sending seeked event');
+    logger.info('Sending seeked event');
     ws.send('time:' + message.payload);
   }
 });
