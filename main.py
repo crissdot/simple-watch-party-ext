@@ -11,10 +11,12 @@ class ConnectionManager:
         await websocket.accept()
         await self.broadcast(f"Client #{client_id} joined the chat")
         self.active_connections[client_id] = websocket
+        await self.broadcast(f"Clients #{self.active_connections.keys()} in the room")
 
     async def disconnect(self, client_id: int):
         self.active_connections.pop(client_id, None)
         await self.broadcast(f"Client #{client_id} left the chat")
+        await self.broadcast(f"Clients #{self.active_connections.keys()} in the room")
 
     async def send_message_to_others(self, client_id: int, message: str):
         for id, connection in self.active_connections.items():
