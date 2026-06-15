@@ -1,18 +1,27 @@
 function sendPlayEvent() {
-  chrome.runtime.sendMessage({
-    type: "VIDEO_PLAY_EVENT",
-  });
+  if (sendEvent) {
+    chrome.runtime.sendMessage({
+      type: "VIDEO_PLAY_EVENT",
+    });
+  }
+  sendEvent = true;
 }
 
 function sendPauseEvent() {
-  chrome.runtime.sendMessage({
-    type: "VIDEO_PAUSE_EVENT",
-  });
+  if (sendEvent) {
+    chrome.runtime.sendMessage({
+      type: "VIDEO_PAUSE_EVENT",
+    });
+  }
+  sendEvent = true;
 }
 
 function sendSeekedEvent(currentTime) {
-  chrome.runtime.sendMessage({
-    type: "VIDEO_SEEKED_EVENT",
-    payload: currentTime,
-  });
+  if (sendEvent) {
+    chrome.runtime.sendMessage({
+      type: "VIDEO_SEEKED_EVENT",
+      payload: currentTime,
+    });
+  }
+  sendEvent = true;
 }

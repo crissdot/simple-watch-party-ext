@@ -1,4 +1,5 @@
 let playerControls = null;
+let sendEvent = true;
 
 function addVideoPlayerListeners() {
   video = getGlobalVideo();
@@ -29,6 +30,7 @@ function playVideo() {
     logger.info('Cannot play video remotely');
     return;
   }
+  sendEvent = false;
   video.play();
 }
 
@@ -39,6 +41,7 @@ function pauseVideo() {
     logger.info('Cannot pause video remotely');
     return;
   }
+  sendEvent = false;
   video.pause();
 }
 
@@ -49,5 +52,6 @@ function seekVideo(newTime) {
     logger.info('Cannot seek video remotely');
     return;
   }
+  sendEvent = false;
   video.currentTime = newTime;
 }
