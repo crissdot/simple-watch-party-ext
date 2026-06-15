@@ -53,5 +53,23 @@ function seekVideo(newTime) {
     return;
   }
   sendEvent = false;
-  video.currentTime = newTime;
+
+  const seekBar = getGlobalSeekBar();
+  if (!seekBar) {
+    logger.warn('SeekBar not found, using default');
+    video.currentTime = newTime;
+    return;
+  }
+
+  seekBar.value = newTime;
+  seekBar.dispatchEvent(
+    new Event("mousedown", {
+      bubbles: true
+    })
+  );
+  seekBar.dispatchEvent(
+    new Event("mouseup", {
+      bubbles: true
+    })
+  );
 }

@@ -27,18 +27,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 function init() {
   if (isConnected) {
-    logger.info('Watch Party already synced');
+    logger.warn('Watch Party already synced');
     return;
   }
 
   logger.info("Extension clicked inside content script!");
   const video = getVideoElement();
   if (!video) {
-    logger.info('Cannot get video')
+    logger.warn('Cannot get video')
     return;
   }
-
   setGlobalVideo(video);
+
+  const seekBar = getSeekBarElement();
+  if (seekBar) {
+    setGlobalSeekBar(seekBar);
+  } else {
+    logger.warn('Cannot get seekBar');
+  }
+
   chrome.runtime.sendMessage({
     type: "WS_INIT_EVENT"
   });
