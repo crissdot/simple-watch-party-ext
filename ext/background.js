@@ -1,7 +1,7 @@
 importScripts("utils/Logger.js");
 
+let clientId = null;
 let ws = null;
-let dataReceived = null;
 let tabId = null;
 
 chrome.action.onClicked.addListener((tab) => {
@@ -13,8 +13,15 @@ chrome.action.onClicked.addListener((tab) => {
 
 
 function addWebSocketListeners() {
-  const clientId = parseInt(Date.now() * Math.random());
-  ws = new WebSocket("ws://localhost:8000/ws/" + clientId);
+  if (ws) {
+    logger.warn("WS already exists for id: " + clientId)
+    chrome.tabs.sendMessage(tabId, {
+      action: "WS_CONNECTED_EVENT",
+    });
+  } else {
+    clientId = parseInt(Date.now() * Math.random());
+    ws = new WebSocket("ws://localhost:8000/ws/" + clientId);
+  }
 
   ws.onopen = function(event) {
     logger.info("Connected to WebSocket server. Your id is: " + clientId);
@@ -25,7 +32,7 @@ function addWebSocketListeners() {
 
   ws.onmessage = function(event) {
     logger.info("Message from server: ", event.data);
-    dataReceived = event.data;
+    const dataReceived = event.data;
     if (dataReceived === 'play') {
       chrome.tabs.sendMessage(tabId, {
         action: "VIDEO_PLAY_EVENT",
